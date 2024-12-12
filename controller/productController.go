@@ -3,18 +3,17 @@ package controller
 import (
 	"be-go-product-sales/models"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 type productInput struct {
-	NamaBarang       string    `json:"nama_barang" binding:"required"`
-	Stok             int       `json:"stok" binding:"required"`
-	JumlahTerjual    int       `json:"jumlah_terjual" binding:"required"`
-	TanggalTransaksi time.Time `json:"tanggal_transaksi" binding:"required"`
-	JenisBarang      string    `json:"jenis_barang" binding:"required"`
+	NamaBarang       string `json:"nama_barang" binding:"required"`
+	Stok             int    `json:"stok" binding:"required"`
+	JumlahTerjual    int    `json:"jumlah_terjual" binding:"required"`
+	TanggalTransaksi string `json:"tanggal_transaksi" binding:"required"`
+	JenisBarang      string `json:"jenis_barang" binding:"required"`
 }
 
 // GetAllProduct godoc
