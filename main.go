@@ -1,9 +1,8 @@
 package main
 
-import (
-	"fmt"
-)
+import "be-go-product-sales/api"
 
 func main() {
-	fmt.Println("Hello World")
+	api.App.Run()
+
 }
