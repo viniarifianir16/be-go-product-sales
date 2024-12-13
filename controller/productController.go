@@ -13,7 +13,8 @@ type productInput struct {
 	Stok             int    `json:"stok" binding:"required"`
 	JumlahTerjual    int    `json:"jumlah_terjual" binding:"required"`
 	TanggalTransaksi string `json:"tanggal_transaksi" binding:"required"`
-	JenisBarang      string `json:"jenis_barang" binding:"required"`
+	// JenisBarang      string `json:"jenis_barang" binding:"required"`
+	CategoryID uint `json:"category_id" binding:"required"`
 }
 
 // GetAllProduct godoc
@@ -26,7 +27,7 @@ type productInput struct {
 func GetAllProduct(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var product []models.Product
-	if err := db.Find(&product).Error; err != nil {
+	if err := db.Preload("Category").Find(&product).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -43,12 +44,17 @@ func GetAllProduct(c *gin.Context) {
 // @Router /product [post]
 func AddProduct(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
-	// var product models.Product
+	var category models.Category
 
 	// validasi input
 	var input productInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := db.Where("id = ?", input.CategoryID).First(&category).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "category_id not found!"})
 		return
 	}
 
@@ -58,7 +64,8 @@ func AddProduct(c *gin.Context) {
 		Stok:             input.Stok,
 		JumlahTerjual:    input.JumlahTerjual,
 		TanggalTransaksi: input.TanggalTransaksi,
-		JenisBarang:      input.JenisBarang,
+		CategoryID:       input.CategoryID,
+		// JenisBarang:      input.JenisBarang,
 	}
 
 	if err := db.Create(&product).Error; err != nil {
@@ -101,7 +108,8 @@ func UpdateProduct(c *gin.Context) {
 	product.Stok = input.Stok
 	product.JumlahTerjual = input.JumlahTerjual
 	product.TanggalTransaksi = input.TanggalTransaksi
-	product.JenisBarang = input.JenisBarang
+	product.CategoryID = input.CategoryID
+	// product.JenisBarang = input.JenisBarang
 
 	if err := db.Save(&product).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

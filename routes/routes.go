@@ -28,10 +28,17 @@ func SetupRouter(db *gorm.DB, r *gin.Engine) {
 		c.Set("db", db)
 	})
 
+	// Product Router
 	r.GET("/product", controller.GetAllProduct)
 	r.POST("/product", controller.AddProduct)
 	r.PATCH("/product/:id", controller.UpdateProduct)
 	r.DELETE("/product/:id", controller.DeleteProduct)
+
+	// Category Router
+	r.GET("/category", controller.GetAllCategory)
+	r.POST("/category", controller.AddCategory)
+	r.PATCH("/category/:id", controller.UpdateCategory)
+	r.DELETE("/category/:id", controller.DeleteCategory)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }

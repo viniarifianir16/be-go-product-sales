@@ -15,6 +15,126 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/category": {
+            "get": {
+                "description": "Get a list of Category.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Get All Category.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Category"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add a new Category.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Add New Category.",
+                "parameters": [
+                    {
+                        "description": "The body to create a new Category",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.categoryInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Category"
+                        }
+                    }
+                }
+            }
+        },
+        "/category/{id}": {
+            "delete": {
+                "description": "Delete a category by id.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Delete one category.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update category by id.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Update Category.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "The body to update an Category",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.categoryInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Category"
+                        }
+                    }
+                }
+            }
+        },
         "/product": {
             "get": {
                 "description": "Get a list of Product.",
@@ -137,18 +257,30 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controller.categoryInput": {
+            "type": "object",
+            "required": [
+                "jenis_barang"
+            ],
+            "properties": {
+                "jenis_barang": {
+                    "type": "string"
+                }
+            }
+        },
         "controller.productInput": {
             "type": "object",
             "required": [
-                "jenis_barang",
+                "category_id",
                 "jumlah_terjual",
                 "nama_barang",
                 "stok",
                 "tanggal_transaksi"
             ],
             "properties": {
-                "jenis_barang": {
-                    "type": "string"
+                "category_id": {
+                    "description": "JenisBarang      string ` + "`" + `json:\"jenis_barang\" binding:\"required\"` + "`" + `",
+                    "type": "integer"
                 },
                 "jumlah_terjual": {
                     "type": "integer"
@@ -164,7 +296,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Product": {
+        "models.Category": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -175,6 +307,27 @@ const docTemplate = `{
                 },
                 "jenis_barang": {
                     "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Product": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "$ref": "#/definitions/models.Category"
+                },
+                "category_id": {
+                    "description": "JenisBarang      string    ` + "`" + `json:\"jenis_barang\"` + "`" + `",
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "jumlah_terjual": {
                     "type": "integer"
