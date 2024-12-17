@@ -1,4 +1,4 @@
 # be-go-product-sales
 
 DOCUMENTATION | 
-be-go-product-sales.vercel.app/swagger/index.html
+https://be-go-product-sales.vercel.app/swagger/index.html
