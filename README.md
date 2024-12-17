@@ -1,4 +1,4 @@
 # be-go-product-sales
 
-DOCUMENTATION \n
+DOCUMENTATION | 
 be-go-product-sales.vercel.app/swagger/index.html
